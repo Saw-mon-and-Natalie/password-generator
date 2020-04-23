@@ -1,6 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no">
+        <meta charset="utf-8">
+        <title>Cryptographically Strong Random Password Generator</title>
+        <meta name="description" content="Cryptographically Strong Random Password Generator app that creates complex strong passowrd. The passwords are generated client side without sending any information to an external machine/server.">
+        <meta name="keywords" content="Strong Password, Strong Password Generator, Cryptography, Password Generator, Online Password Generator, Random Password Generator, Secure Password Generator, Create Password, Generate Password, CLient-side Password Generator">
+        
+        <meta name="robots" content="index,follow">
+        <meta name="referrer" content="origin-when-cross-origin">
+        
+        <meta name="author" content="Saw-mon &amp; Natalie">
+        <meta name="creator" content="Saw-mon &amp; Natalie">
+        <meta name="theme-color" content="#FFFFFF">
+        <meta name="twitter:site" content="@sw0nt">
+        <meta name="twitter:creator" content="@sw0nt">
+        <meta name="apple-mobile-web-app-title" content="saw-mon &amp; natalie">
+        <meta name="application-name" content="saw-mon &amp; natalie">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Cryptographically Strong Random Password Generator">
+        <meta name="twitter:image" content="https://passwd.sawmon-and-natalie.com/img/og-1200x1200.webp">
+        <meta name="twitter:image:alt" content="A key made of jigsaw puzzle pieces.">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://passwd.sawmon-and-natalie.com/">
+        <meta property="og:title" content="Cryptographically Strong Random Password Generator">
+        <meta property="og:image" content="https://passwd.sawmon-and-natalie.com/img/og-1200x1200.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="1200px">
+        <meta property="og:image:height" content="1200px">
+        <meta property="og:image:alt" content="A key made of jigsaw puzzle pieces.">
+
+        <link rel="canonical" href="https://passwd.sawmon-and-natalie.com/">
+
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="js/passwd.js"></script>
     </head>
@@ -12,7 +45,7 @@
             <img src="img/key.svg" width="100"/>
         </aside>
         <main>
-            <form action="" method="">
+            <form id="password-form">
                 <label class="panel">
                     <div class="options">
                         <div class="panel-title badge-left">password length</div>
@@ -21,7 +54,7 @@
                         </div>
                     </div>
                 </label>
-                <input type="range" min="6" max="1024" step="1" value="16">
+                <input id="password-length-slider" type="range" min="6" max="1024" step="1" value="16">
                 <fieldset class="panel" name="include">
                     <legend class="panel-title">include</legend>
                     <div class="options">
@@ -65,12 +98,81 @@
                 <button id="generate-password" type="button" autofocus>Generate Password</button>
             </form>
         </main>
+        <footer>
+            <a href="https://github.com/Saw-mon-and-Natalie/password-generator" target="_blank" rel="noopener">
+                <img src="img/github.svg" width="24" />
+            </a>
+        </footer>
         <div class="generated-password-wrapper">
             <div class="generated-password">
-                <span id="password-field"></span>
+                <div class="generated-password-inner">
+                    <span id="password-field"></span>
+                </div>
+                <div class="btn-close">
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="copy">copied</div>
             </div>
-            <div class="copy">copy</div>
+            <ul class="shortcuts">
+                <li class="shortcut">
+                    <span>copy</span>
+                    <div class="keyboard-btn-group">
+                        <div class="keyboard-btn">ctrl</div>
+                        <span style="margin: 0 2px;">+</span>
+                        <div class="keyboard-btn">C</div>
+                    </div>
+                    
+                </li>
+                <li class="shortcut">
+                    <span>generagte again</span>
+                    <div class="keyboard-btn">Enter</div>
+                </li>
+                <li class="shortcut">
+                    <span>increase pass length</span>
+                    <div class="keyboard-btn">+</div>
+                </li>
+                <li class="shortcut">
+                    <span>decrease pass length</span>
+                    <div class="keyboard-btn">-</div>
+                </li>
+                <li class="shortcut">
+                    <span>uppercase</span>
+                    <div class="keyboard-btn">U</div>
+                </li>
+                <li class="shortcut">
+                    <span>lowercase</span>
+                    <div class="keyboard-btn">L</div>
+                </li>
+                <li class="shortcut">
+                    <span>digits</span>
+                    <div class="keyboard-btn">D</div>
+                </li>
+                <li class="shortcut">
+                    <span>special characters</span>
+                    <div class="keyboard-btn">S</div>
+                </li>
+                <li class="shortcut">
+                    <span>similiar characters</span>
+                    <div class="keyboard-btn">I</div>
+                </li>
+                <li class="shortcut">
+                    <span>ambiguous characters</span>
+                    <div class="keyboard-btn">A</div>
+                </li>
+                <li class="shortcut">
+                    <span>toggle shortcuts</span>
+                    <div class="keyboard-btn-group">
+                        <div class="keyboard-btn">/</div>
+                        <span style="margin: 0 2px;">or</span>
+                        <div class="keyboard-btn">?</div>
+                    </div>
+                </li>
+                <li class="shortcut">
+                    <span>close</span>
+                    <div class="keyboard-btn">Esc</div>
+                </li>
+            </ul>
         </div>
-        <footer></footer>
     </body>
 </html>
