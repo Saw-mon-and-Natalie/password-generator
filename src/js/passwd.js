@@ -79,6 +79,13 @@
 
         const passwordform = document.getElementById("password-form")
 
+        const settingsIcon = document.getElementById("settings-icon")
+        const leftSide = document.querySelector(".left-side")
+        const main = document.querySelector("main")
+        let mainIsClosed = true
+
+        const keySymbol = document.getElementById("key-symbol")
+
         passwordform.addEventListener('submit', function(event) {
             event.preventDefault()
 
@@ -96,6 +103,25 @@
         passwordField.addEventListener('click', function() {
             copyPassword()
         })
+
+        keySymbol.addEventListener('click', generatePassword)
+
+        function toggleSettings() {
+            if( mainIsClosed ) {
+                leftSide.style.width = "40%";
+                main.style.display = "flex";
+                main.style.opacity = 1;
+            } else {
+                main.style.opacity = 0;
+                main.style.display = "none";
+                leftSide.style.width = "100%";
+                
+            }
+            
+            mainIsClosed = !mainIsClosed
+        }
+
+        settingsIcon.addEventListener('click', toggleSettings)
 
 
         document.addEventListener('keyup', function(event) {
@@ -131,6 +157,8 @@
                 similiarCharacters.checked = !similiarCharacters.checked
             } else if ( event.keyCode == 65 ) {
                 ambiguousCharacters.checked = !ambiguousCharacters.checked
+            } else if ( event.keyCode == 192 ) {
+                toggleSettings()
             }
 
 

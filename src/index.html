@@ -38,12 +38,25 @@
         <script src="js/passwd.js"></script>
     </head>
     <body>
-        <header>
-            <h1>Password<br> Generator</h1>
-        </header>
-        <aside>
-            <img src="img/key.svg" width="100"/>
-        </aside>
+        <div class="left-side">
+            <header>
+                <h1>Password<br> Generator</h1>
+            </header>
+            <aside>
+                <img id="key-symbol" src="img/key.svg" width="100"/>
+                <p class="key-instructions">
+                    Click, tap the key symbol or <br />
+                    hit <b>[ENTER]</b> to generate a password.
+                </p>
+            </aside>
+            <footer>
+                <a href="https://github.com/Saw-mon-and-Natalie/password-generator" target="_blank" rel="noopener">
+                    <img class="icon" src="img/github.svg" width="24" />
+                </a>
+                <p class="copyright">made with love by Saw-mon & Natalie</p>
+                <img id="settings-icon" class="icon" src="img/settings.svg" width="24" />
+            </footer>
+        </div>
         <main>
             <form id="password-form">
                 <label class="panel">
@@ -59,24 +72,68 @@
                     <legend class="panel-title">include</legend>
                     <div class="options">
                         <label class="pad">
-                            <input id="include-uppercase" type="checkbox" checked name="uppercase">
-                            <div class="background-fill"></div>
-                            <div class="sub-label">uppercase</div>
+                            <input class="invisible" id="include-uppercase" type="checkbox" checked name="uppercase">
+                            <div class="background-fill">
+                                <div class="sub-label">uppercase</div>
+                            </div>
+                            <div class="character-class-range">
+                                <label>
+                                    <span>min</span>
+                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                </label>
+                                <label>
+                                    <span>max</span>
+                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                </label>
+                            </div> 
                         </label>
                         <label class="pad">
-                            <input id="include-lowercase" type="checkbox" checked name="lowercase">
-                            <div class="background-fill"></div>
-                            <div class="sub-label">lowercase</div>
+                            <input class="invisible" id="include-lowercase" type="checkbox" checked name="lowercase">
+                            <div class="background-fill">
+                                <div class="sub-label">lowercase</div>
+                            </div>
+                            <div class="character-class-range">
+                                <label>
+                                    <span>min</span>
+                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                </label>
+                                <label>
+                                    <span>max</span>
+                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                </label>
+                            </div>
                         </label>
                         <label class="pad">
-                            <input id="include-digits" type="checkbox" checked name="digits">
-                            <div class="background-fill"></div>
-                            <div class="sub-label">digits</div>
+                            <input class="invisible" id="include-digits" type="checkbox" checked name="digits">
+                            <div class="background-fill">
+                                <div class="sub-label">digits</div>
+                            </div>
+                            <div class="character-class-range">
+                                <label>
+                                    <span>min</span>
+                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                </label>
+                                <label>
+                                    <span>max</span>
+                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                </label>
+                            </div>
                         </label>
                         <label class="pad">
-                            <input id="include-special-characters" type="checkbox" checked name="special-characters">
-                            <div class="background-fill"></div>
-                            <div class="sub-label">special characters</div>
+                            <input class="invisible" id="include-special-characters" type="checkbox" checked name="special-characters">
+                            <div class="background-fill">
+                                <div class="sub-label">special characters</div>
+                            </div>
+                            <div class="character-class-range">
+                                <label>
+                                    <span>min</span>
+                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                </label>
+                                <label>
+                                    <span>max</span>
+                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                </label>
+                            </div>
                         </label>
                     </div>
                 </fieldset>
@@ -84,25 +141,23 @@
                     <legend class="panel-title">exclude</legend>
                     <div class="options">
                         <label class="pad">
-                            <input id="exclude-similiar-characters" type="checkbox" name="similiar-characters">
-                            <div class="background-fill"></div>
-                            <div class="sub-label">similiar characters</div>
+                            <input class="invisible" id="exclude-similiar-characters" type="checkbox" name="similiar-characters">
+                            <div class="background-fill round-corners">
+                                <div class="sub-label">similiar characters</div>
+                            </div>
                         </label>
                         <label class="pad">
-                            <input id="exclude-ambiguous-characters" type="checkbox" name="ambiguous-characters">
-                            <div class="background-fill"></div>
-                            <div class="sub-label">ambiguous characters</div>
+                            <input class="invisible" id="exclude-ambiguous-characters" type="checkbox" name="ambiguous-characters">
+                            <div class="background-fill round-corners">
+                                <div class="sub-label">ambiguous characters</div>
+                            </div> 
                         </label>
                     </div>
                 </fieldset>
                 <button id="generate-password" type="button" autofocus>Generate Password</button>
             </form>
         </main>
-        <footer>
-            <a href="https://github.com/Saw-mon-and-Natalie/password-generator" target="_blank" rel="noopener">
-                <img src="img/github.svg" width="24" />
-            </a>
-        </footer>
+        
         <div class="generated-password-wrapper">
             <div class="generated-password">
                 <div class="generated-password-inner">
@@ -166,6 +221,14 @@
                         <div class="keyboard-btn">/</div>
                         <span style="margin: 0 2px;">or</span>
                         <div class="keyboard-btn">?</div>
+                    </div>
+                </li>
+                <li class="shortcut">
+                    <span>toggle settings</span>
+                    <div class="keyboard-btn-group">
+                        <div class="keyboard-btn">`</div>
+                        <span style="margin: 0 2px;">or</span>
+                        <div class="keyboard-btn">~</div>
                     </div>
                 </li>
                 <li class="shortcut">
