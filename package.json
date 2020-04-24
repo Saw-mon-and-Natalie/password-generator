@@ -1,0 +1,41 @@
+{
+  "name": "password-generator",
+  "version": "1.0.0",
+  "description": "A simple password generator app that works client-side.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saw-mon-and-Natalie/password-generator.git"
+  },
+  "keywords": [
+    "password",
+    "strong",
+    "password",
+    "password",
+    "generator",
+    "Saw-mon & Natalie"
+  ],
+  "author": "Saw-mon & Natalie",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Saw-mon-and-Natalie/password-generator/issues"
+  },
+  "homepage": "https://github.com/Saw-mon-and-Natalie/password-generator#readme",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-purifycss": "^0.2.0",
+    "gulp-svgmin": "^2.2.0",
+    "gulp-uglify": "^3.0.2"
+  },
+  "dependencies": {}
+}
