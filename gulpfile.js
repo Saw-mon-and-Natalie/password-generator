@@ -4,6 +4,7 @@ const htmlmin = require('gulp-htmlmin')
 
 const babel = require('gulp-babel')
 const uglify = require('gulp-uglify')
+const terser = require('gulp-terser')
 
 const purify = require('gulp-purifycss')
 const autoprefixer = require('gulp-autoprefixer')
@@ -83,12 +84,27 @@ function cleanBuild(cb) {
     cb()
 }
 
+function terse(cb) {
+    gulp.src('src/js/*.js')
+        .pipe(terser({
+            compress: {
+                drop_console: true,
+            },
+            mangle: {
+                toplevel: true,
+            }
+        }))
+        .pipe(gulp.dest('dist/js/'))
+    cb()
+}
+
 exports.babelify = babelify
 exports.compress = compress
 exports.css = css
 exports.svg = svg
 exports.copy = copy
-exports.cleanBuild = cleanBuild
+exports.clean = cleanBuild
 exports.html = html
+exports.terser = terse
 
 exports.build = gulp.parallel(compress, css, svg, html)
