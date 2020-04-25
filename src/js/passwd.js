@@ -3,23 +3,53 @@
     let passwordField
     let btn
     let copiedSpan
-    let passwordLengthInput
+    
     let closeBtn
-    let shortcutsPanel
+
     let passwordform
     let passwordLengthSlider
+    let passwordLengthInput
+
     let uppercaseInput
     let lowercaseInput
     let digitsInput
     let specialCharactersInput
+
+    let uppercaseMinInput
+    let uppercaseMaxInput
+    let lowercaseMinInput
+    let lowercaseMaxInput
+    let digitsMinInput
+    let digitsMaxInput
+    let specialCharactersMinInput
+    let specialCharactersMaxInput
+
     let similiarCharactersInput
     let ambiguousCharactersInput
+
     let settingsIcon
     let leftSide
     let main
     let mainIsClosed
+    let shortcutsPanel
     let shortcutsPanelIsOpen
     let keySymbol
+
+    let totalMin = 6
+    let totalMax = 1024
+    let passwordLength = 16
+
+    let uppercaseMin = 2
+    let uppercaseMax = 1024
+
+    let lowercaseMin = 2
+    let lowercaseMax = 1024
+
+    let digitsMix = 2
+    let digitsMax = 1024
+
+    let specialCharactersMin = 2
+    let specialCharactersMax = 1024
 
     function init() {
         initFields()
@@ -31,17 +61,26 @@
         passwordField = d[c]("#password-field")
         btn = d[c]("#generate-password")
         copiedSpan = d[c]('.copy')
-        passwordLengthInput = d[c]("#password-length")
+        
         closeBtn = d[c](".btn-close")
-        shortcutsPanel = d[c]("ul.shortcuts")
 
         passwordform = d[c]("#password-form")
         passwordLengthSlider = d[c]("#password-length-slider")
+        passwordLengthInput = d[c]("#password-length")
 
         uppercaseInput = d[c]("#include-uppercase")
         lowercaseInput = d[c]("#include-lowercase")
         digitsInput = d[c]("#include-digits")
         specialCharactersInput = d[c]("#include-special-characters")
+
+        uppercaseMinInput = d[c]("#uppercaseMin")
+        uppercaseMaxInput = d[c]("#uppercaseMax")
+        lowercaseMinInput = d[c]("#lowercaseMin")
+        lowercaseMaxInput = d[c]("#lowercaseMax")
+        digitsMinInput = d[c]("#digitsMin")
+        digitsMaxInput = d[c]("#digitsMax")
+        specialCharactersMinInput = d[c]("#specialCharactersMin")
+        specialCharactersMaxInput = d[c]("#specialCharactersMax")
 
         similiarCharactersInput = d[c]("#exclude-similiar-characters")
         ambiguousCharactersInput = d[c]("#exclude-ambiguous-characters")
@@ -50,6 +89,7 @@
         leftSide = d[c](".left-side")
         main = d[c]("main")
         mainIsClosed = true
+        shortcutsPanel = d[c]("ul.shortcuts")
         shortcutsPanelIsOpen = false
         keySymbol = d[c]("#key-symbol")
     }
@@ -77,8 +117,6 @@
     function generatePassword() {
         copiedSpan.classList.remove('show')
 
-        const passwordLength = parseInt(passwordLengthInput.value)
-
         const includeUppercase = uppercaseInput.checked
         const includeLowercase = lowercaseInput.checked
         const includeDigits = digitsInput.checked
@@ -87,15 +125,30 @@
         const excludeSimiliarCharacters = similiarCharactersInput.checked
         const excludeAmbiguousCharacters = ambiguousCharactersInput.checked
 
-        let characters = ''
-        characters += includeUppercase ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' : ''
-        characters += includeLowercase ? 'abcdefghijklmnopqrstuvwxyz' : ''
-        characters += includeDigits ? '0123456789' : ''
-        characters += includeSpecialCharacters ? '!@#$%^&*()_+-=[]{}`~;:\'"/?.<>,\\|' : ''
+        
+        let uppercaseCharacters  = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
+        let lowercaseCharacters = 'abcdefghijkmnpqrstuvwxyz'
+        let digitCharacters = '123456789'
+        let specialCharacters = '!@#$%^&*-=_+?'
 
-        if( excludeSimiliarCharacters ) {
-            characters = characters.replace(/[iIl\|o0O]/g, '')
+        if( !excludeSimiliarCharacters ) {
+            uppercaseCharacters += 'IO'
+            lowercaseCharacters += 'lo'
+            digitCharacters += '0'
+            specialCharacters += '|'
         }
+
+        if( !excludeAmbiguousCharacters ) {
+            specialCharacters += '()[]{}<>;:.,/\\~'
+        }
+        
+        let characters = ''
+        characters += includeUppercase ? uppercaseCharacters : ''
+        characters += includeLowercase ? lowercaseCharacters : ''
+        characters += includeDigits ? digitCharacters : ''
+        characters += includeSpecialCharacters ? specialCharacters : ''
+
+        
 
         let password = ''
 
@@ -105,6 +158,12 @@
         
         passwordField.textContent = password
         generatedPasswordWrapper.style.display = 'flex'
+    }
+
+    function updatePasswordLength(length) {
+        passwordLength = Math.max(Math.min(length, totalMax), totalMin)
+        passwordLengthSlider.value = passwordLength
+        passwordLengthInput.value = passwordLength
     }
 
     function toggleSettings() {
@@ -136,28 +195,21 @@
                 generatePassword()
                 break
             case 107:
-            case 187: {
-                let newLength = parseInt(passwordLengthInput.value) + 1
-                newLength = Math.min(newLength, 1024)
-                newLength = Math.max(6, newLength)
-                passwordLengthSlider.value = newLength
-                passwordLengthInput.value = newLength
+            case 187:
+                updatePasswordLength(parseInt(passwordLengthInput.value) + 1)
                 break
-            }
             case 109:
-            case 189: {
-                let newLength = parseInt(passwordLengthInput.value) - 1
-                newLength = Math.min(newLength, 1024)
-                newLength = Math.max(6, newLength)
-                passwordLengthSlider.value = newLength
-                passwordLengthInput.value = newLength
+            case 189:
+                updatePasswordLength(parseInt(passwordLengthInput.value) - 1)
                 break
-            }
             case 67:
                 event.ctrlKey && copyPassword()
                 break
             case 191:
                 toggleShortcuts()
+                break
+            case 192:
+                toggleSettings()
                 break
             case 85:
                 uppercaseInput.checked = !uppercaseInput.checked
@@ -177,8 +229,6 @@
             case 65:
                 ambiguousCharactersInput.checked = !ambiguousCharactersInput.checked
                 break
-            case 192:
-                toggleSettings()
             default:
                 break;
         }
@@ -196,8 +246,52 @@
             generatedPasswordWrapper.style.display = 'none'
         })
 
-        passwordLengthSlider[a]('change', function(event) {
-            passwordLengthInput.value = event.target.value
+        passwordLengthSlider[a]('change', function() {
+            updatePasswordLength(passwordLengthSlider.value)
+        })
+
+        passwordLengthInput[a]('change', function() {
+            updatePasswordLength(passwordLengthInput.value)
+        })
+
+        uppercaseMinInput[a]('change', function() {
+            uppercaseMin = Math.min(uppercaseMax, parseInt(uppercaseMinInput.value))
+            uppercaseMinInput.value = uppercaseMin
+        })
+
+        uppercaseMaxInput[a]('change', function() {
+            uppercaseMax = Math.max(uppercaseMin, parseInt(uppercaseMaxInput.value))
+            uppercaseMaxInput.value = uppercaseMax
+        })
+
+        lowercaseMinInput[a]('change', function() {
+            lowercaseMin = Math.min(lowercaseMax, parseInt(lowercaseMinInput.value))
+            lowercaseMinInput.value = lowercaseMin
+        })
+
+        lowercaseMaxInput[a]('change', function() {
+            lowercaseMax = Math.max(lowercaseMin, parseInt(lowercaseMaxInput.value))
+            lowercaseMaxInput.value = lowercaseMax
+        })
+
+        digitsMinInput[a]('change', function() {
+            digitsMin = Math.min(digitsMax, parseInt(digitsMinInput.value))
+            digitsMinInput.value = digitsMin
+        })
+
+        digitsMaxInput[a]('change', function() {
+            digitsMax = Math.max(digitsMin, parseInt(digitsMaxInput.value))
+            digitsMaxInput.value = digitsMax
+        })
+
+        specialCharactersMinInput[a]('change', function() {
+            specialCharactersMin = Math.min(specialCharactersMax, parseInt(specialCharactersMinInput.value))
+            specialCharactersMinInput.value = specialCharactersMin
+        })
+
+        specialCharactersMaxInput[a]('change', function() {
+            specialCharactersMax = Math.max(specialCharactersMin, parseInt(specialCharactersMaxInput.value))
+            specialCharactersMaxInput.value = specialCharactersMax
         })
 
         passwordField[a]('click', copyPassword)

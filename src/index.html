@@ -78,11 +78,11 @@
                             <div class="character-class-range">
                                 <label>
                                     <span>min</span>
-                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                    <input id="uppercaseMin" class="character-class-min" type="number" min="0" max="1024" value="2">
                                 </label>
                                 <label>
                                     <span>max</span>
-                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                    <input id="uppercaseMax" class="character-class-max" type="number" min="0" max="1024">
                                 </label>
                             </div> 
                         </label>
@@ -94,11 +94,11 @@
                             <div class="character-class-range">
                                 <label>
                                     <span>min</span>
-                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                    <input id="lowercaseMin" class="character-class-min" type="number" min="0" max="1024" value="2">
                                 </label>
                                 <label>
                                     <span>max</span>
-                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                    <input id="lowercaseMax" class="character-class-max" type="number" min="0" max="1024">
                                 </label>
                             </div>
                         </label>
@@ -110,11 +110,11 @@
                             <div class="character-class-range">
                                 <label>
                                     <span>min</span>
-                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                    <input id="digitsMin" class="character-class-min" type="number" min="0" max="1024" value="2">
                                 </label>
                                 <label>
                                     <span>max</span>
-                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                    <input id="digitsMax" class="character-class-max" type="number" min="0" max="1024">
                                 </label>
                             </div>
                         </label>
@@ -126,11 +126,11 @@
                             <div class="character-class-range">
                                 <label>
                                     <span>min</span>
-                                    <input class="character-class-min" type="number" min="0" max="1024" value="2">
+                                    <input id="specialCharactersMin" class="character-class-min" type="number" min="0" max="1024" value="2">
                                 </label>
                                 <label>
                                     <span>max</span>
-                                    <input class="character-class-max" type="number" min="0" max="1024">
+                                    <input id="specialCharactersMax" class="character-class-max" type="number" min="0" max="1024">
                                 </label>
                             </div>
                         </label>
@@ -140,7 +140,7 @@
                     <legend class="panel-title">exclude</legend>
                     <div class="options">
                         <label class="pad">
-                            <input class="invisible" id="exclude-similiar-characters" type="checkbox" name="similiar-characters">
+                            <input class="invisible" id="exclude-similiar-characters" type="checkbox" name="similiar-characters" checked>
                             <div class="background-fill round-corners">
                                 <div class="sub-label">similiar characters</div>
                             </div>
