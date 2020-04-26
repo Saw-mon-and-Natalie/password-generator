@@ -4,6 +4,8 @@
   "description": "A simple password generator app that works client-side.",
   "main": "index.js",
   "scripts": {
+    "clean": "gulp clean",
+    "build": "npm run clean && gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

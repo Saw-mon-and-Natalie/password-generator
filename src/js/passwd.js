@@ -1,4 +1,4 @@
-(function(w, d, c, a) {
+!(function(w, d, l, c, a) {
     let generatedPasswordWrapper
     let passwordField
     let btn
@@ -35,24 +35,11 @@
     let shortcutsPanelIsOpen
     let keySymbol
 
-    let totalMin = 6
-    let totalMax = 1024
-    let passwordLength = 16
-
-    let uppercaseMin = 2
-    let uppercaseMax = 1024
-
-    let lowercaseMin = 2
-    let lowercaseMax = 1024
-
-    let digitsMix = 2
-    let digitsMax = 1024
-
-    let specialCharactersMin = 2
-    let specialCharactersMax = 1024
+    let config
 
     function init() {
         initFields()
+        loadLocalStorage()
         initEventListeners()
     }
 
@@ -94,6 +81,41 @@
         keySymbol = d[c]("#key-symbol")
     }
 
+    function loadLocalStorage() {
+        config = JSON.parse(l.getItem('config')) || {}
+        config.totalMin = parseInt(config.totalMin) || 6
+        config.totalMax = parseInt(config.totalMax) || 1024
+        passwordLengthSlider.value = passwordLengthInput.value = config.passwordLength = parseInt(config.passwordLength) || 16
+    
+        uppercaseMinInput.value = config.uppercaseMin = parseInt(config.uppercaseMin) || 2
+        uppercaseMaxInput.value = config.uppercaseMax = parseInt(config.uppercaseMax) || 1024
+    
+        lowercaseMinInput.value = config.lowercaseMin = parseInt(config.lowercaseMin) || 2
+        lowercaseMaxInput.value = config.lowercaseMax = parseInt(config.lowercaseMax) || 1024
+    
+        digitsMinInput.value = config.digitsMin = parseInt(config.digitsMin) || 2
+        digitsMaxInput.value = config.digitsMax = parseInt(config.digitsMax) || 1024
+    
+        specialCharactersMinInput.value = config.specialCharactersMin = parseInt(config.specialCharactersMin) || 2
+        specialCharactersMaxInput.value = config.specialCharactersMax = parseInt(config.specialCharactersMax) || 1024
+    
+        config.numShuffles = parseInt(config.numShuffles) || 10
+
+        uppercaseInput.checked = config.includeUppercase = config.includeUppercase || false
+        lowercaseInput.checked = config.includeLowercase = config.includeLowercase || false
+        digitsInput.checked = config.includeDigits = config.includeDigits || false
+        specialCharactersInput.checked = config.includeSpecialCharacters = config.includeSpecialCharacters || false
+
+        similiarCharactersInput.checked = config.excludeSimiliarCharacters = config.excludeSimiliarCharacters || false
+        ambiguousCharactersInput.checked = config.excludeAmbiguousCharacters = config.excludeAmbiguousCharacters || false
+
+        saveConfig()
+    }
+
+    function saveConfig() {
+        l.setItem('config', JSON.stringify(config))
+    }
+
     function copyPassword() {
         selectElement(passwordField)
         d.execCommand('copy')
@@ -117,53 +139,104 @@
     function generatePassword() {
         copiedSpan.classList.remove('show')
 
-        const includeUppercase = uppercaseInput.checked
-        const includeLowercase = lowercaseInput.checked
-        const includeDigits = digitsInput.checked
-        const includeSpecialCharacters = specialCharactersInput.checked
+        let charClasses = {}
+        if(config.includeUppercase) {
+            charClasses.uppercase = { used: 0, max: config.uppercaseMax, min: config.uppercaseMin, chars: 'ABCDEFGHJKLMNPQRSTUVWXYZ', extraChars: 'IO' }
 
-        const excludeSimiliarCharacters = similiarCharactersInput.checked
-        const excludeAmbiguousCharacters = ambiguousCharactersInput.checked
-
-        
-        let uppercaseCharacters  = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
-        let lowercaseCharacters = 'abcdefghijkmnpqrstuvwxyz'
-        let digitCharacters = '123456789'
-        let specialCharacters = '!@#$%^&*-=_+?'
-
-        if( !excludeSimiliarCharacters ) {
-            uppercaseCharacters += 'IO'
-            lowercaseCharacters += 'lo'
-            digitCharacters += '0'
-            specialCharacters += '|'
+        }
+        if(config.includeLowercase) { 
+            charClasses.lowercase = { used: 0, max: config.lowercaseMax, min: config.lowercaseMin, chars: 'abcdefghijkmnpqrstuvwxyz', extraChars: 'lo' }
+        }
+        if(config.includeDigits) { 
+            charClasses.digits = { used: 0, max: config.digitsMax, min: config.digitsMin, chars: '123456789', extraChars: '0' }
+        }
+        if(config.includeSpecialCharacters) { 
+            charClasses.special = { used: 0, max: config.specialCharactersMax, min: config.specialCharactersMin, chars: '!@#$%^&*-=_+?', extraChars: '|' }
+            if( !config.excludeAmbiguousCharacters ) {
+                charClasses.special.chars += '()[]{}<>;:.,/\\~'
+            }
         }
 
-        if( !excludeAmbiguousCharacters ) {
-            specialCharacters += '()[]{}<>;:.,/\\~'
+        if( !config.excludeSimiliarCharacters ) {
+            for(let c in charClasses) {
+                charClasses[c].chars += charClasses[c].extraChars
+            }
         }
-        
-        let characters = ''
-        characters += includeUppercase ? uppercaseCharacters : ''
-        characters += includeLowercase ? lowercaseCharacters : ''
-        characters += includeDigits ? digitCharacters : ''
-        characters += includeSpecialCharacters ? specialCharacters : ''
-
-        
 
         let password = ''
+        let charClassesWithoutFilledMin = new Set(Object.keys(charClasses))
 
-        for(let i = 0; i < passwordLength; i++) {
-            password += characters[Math.floor(Math.random() * characters.length)]
+        while( password.length < config.passwordLength && charClassesWithoutFilledMin.size > 0 ) {
+            charClassesWithoutFilledMin.forEach(function(c) {
+                if(charClasses[c].used < charClasses[c].min) {
+                    password += pickRandomChar(charClasses[c].chars)
+                    charClasses[c].used += 1
+                } else {
+                    charClassesWithoutFilledMin.delete(c)
+                }
+            })
+        }
+
+        let charClassesWithoutFilledMax = new Set(Object.keys(charClasses)) 
+        let numCharacters = 0
+
+        for(let c in charClasses) {
+            if(charClasses[c].used < charClasses[c].max) {
+                numCharacters += charClasses[c].chars.length
+            } else {
+                charClassesWithoutFilledMax.delete(c)
+            }
+        }
+
+        while( password.length < config.passwordLength && charClassesWithoutFilledMax.size > 0 ) {
+            let pos = Math.floor(Math.random() * numCharacters)
+
+            for(let c of charClassesWithoutFilledMax) {
+                if(pos < charClasses[c].chars.length) {
+                    password += charClasses[c].chars[pos]
+                    charClasses[c].used += 1
+                    if(charClasses[c].used >= charClasses[c].max) {
+                        charClassesWithoutFilledMax.delete(c)
+                        numCharacters -= charClasses[c].chars.length
+                    }
+                    break
+                } else {
+                    pos -= charClasses[c].chars.length
+                }
+            }
         }
         
+        password = shuffle(password, config.numShuffles)
         passwordField.textContent = password
         generatedPasswordWrapper.style.display = 'flex'
     }
 
+    function pickRandomChar(s) {
+        return s[pickPosition(s)]
+    }
+
+    function pickPosition(s) {
+        return Math.floor(Math.random() * s.length)
+    }
+
+    function shuffle(s, n) {
+        for(let i = 0; i < n; i++) {
+            let shuffled = ''
+
+            while( s.length > 0) {
+                let pos = pickPosition(s)
+                shuffled += s[pos]
+                s = s.slice(0, pos) + s.slice(pos+1)
+            }
+
+            s = shuffled
+        }
+        return s
+    }
+
     function updatePasswordLength(length) {
-        passwordLength = Math.max(Math.min(length, totalMax), totalMin)
-        passwordLengthSlider.value = passwordLength
-        passwordLengthInput.value = passwordLength
+        passwordLengthInput.value = passwordLengthSlider.value = config.passwordLength = Math.max(Math.min(length, config.totalMax), config.totalMin)
+        saveConfig()
     }
 
     function toggleSettings() {
@@ -213,21 +286,33 @@
                 break
             case 85:
                 uppercaseInput.checked = !uppercaseInput.checked
+                config.includeUppercase = uppercaseInput.checked
+                saveConfig()
                 break
             case 76:
                 lowercaseInput.checked = !lowercaseInput.checked
+                config.includeLowercase = lowercaseInput.checked
+                saveConfig()
                 break
             case 68:
                 digitsInput.checked = !digitsInput.checked
+                config.includeDigits = digitsInput.checked
+                saveConfig()
                 break
             case 83:
                 specialCharactersInput.checked = !specialCharactersInput.checked
+                config.includeSpecialCharacters = specialCharactersInput.checked
+                saveConfig()
                 break
             case 73:
                 similiarCharactersInput.checked = !similiarCharactersInput.checked
+                config.excludeSimiliarCharacters = similiarCharactersInput.checked
+                saveConfig()
                 break
             case 65:
                 ambiguousCharactersInput.checked = !ambiguousCharactersInput.checked
+                config.excludeAmbiguousCharacters = ambiguousCharactersInput.checked
+                saveConfig()
                 break
             default:
                 break;
@@ -248,50 +333,77 @@
 
         passwordLengthSlider[a]('change', function() {
             updatePasswordLength(passwordLengthSlider.value)
+            saveConfig()
         })
 
         passwordLengthInput[a]('change', function() {
             updatePasswordLength(passwordLengthInput.value)
+            saveConfig()
         })
 
         uppercaseMinInput[a]('change', function() {
-            uppercaseMin = Math.min(uppercaseMax, parseInt(uppercaseMinInput.value))
-            uppercaseMinInput.value = uppercaseMin
+            uppercaseMinInput.value = config.uppercaseMin = Math.min(config.uppercaseMax, parseInt(uppercaseMinInput.value))
+            saveConfig()
         })
 
         uppercaseMaxInput[a]('change', function() {
-            uppercaseMax = Math.max(uppercaseMin, parseInt(uppercaseMaxInput.value))
-            uppercaseMaxInput.value = uppercaseMax
+            uppercaseMaxInput.value = config.uppercaseMax = Math.max(config.uppercaseMin, parseInt(uppercaseMaxInput.value))
+            saveConfig()
         })
 
         lowercaseMinInput[a]('change', function() {
-            lowercaseMin = Math.min(lowercaseMax, parseInt(lowercaseMinInput.value))
-            lowercaseMinInput.value = lowercaseMin
+            lowercaseMinInput.value = config.lowercaseMin = Math.min(config.lowercaseMax, parseInt(lowercaseMinInput.value))
+            saveConfig()
         })
 
         lowercaseMaxInput[a]('change', function() {
-            lowercaseMax = Math.max(lowercaseMin, parseInt(lowercaseMaxInput.value))
-            lowercaseMaxInput.value = lowercaseMax
+            lowercaseMaxInput.value = config.lowercaseMax = Math.max(config.lowercaseMin, parseInt(lowercaseMaxInput.value))
+            saveConfig()
         })
 
         digitsMinInput[a]('change', function() {
-            digitsMin = Math.min(digitsMax, parseInt(digitsMinInput.value))
-            digitsMinInput.value = digitsMin
+            digitsMinInput.value = config.digitsMin = Math.min(config.digitsMax, parseInt(digitsMinInput.value))
+            saveConfig()
         })
 
         digitsMaxInput[a]('change', function() {
-            digitsMax = Math.max(digitsMin, parseInt(digitsMaxInput.value))
-            digitsMaxInput.value = digitsMax
+            digitsMaxInput.value = config.digitsMax = Math.max(config.digitsMin, parseInt(digitsMaxInput.value))
+            saveConfig()
         })
 
         specialCharactersMinInput[a]('change', function() {
-            specialCharactersMin = Math.min(specialCharactersMax, parseInt(specialCharactersMinInput.value))
-            specialCharactersMinInput.value = specialCharactersMin
+            specialCharactersMinInput.value = config.specialCharactersMin = Math.min(config.specialCharactersMax, parseInt(specialCharactersMinInput.value))
+            saveConfig()
         })
 
         specialCharactersMaxInput[a]('change', function() {
-            specialCharactersMax = Math.max(specialCharactersMin, parseInt(specialCharactersMaxInput.value))
-            specialCharactersMaxInput.value = specialCharactersMax
+            specialCharactersMaxInput.value = config.specialCharactersMax = Math.max(config.specialCharactersMin, parseInt(specialCharactersMaxInput.value))
+            saveConfig()
+        })
+
+        uppercaseInput[a]('change', function() {
+            config.includeUppercase = uppercaseInput.checked
+            saveConfig()
+        })
+        lowercaseInput[a]('change', function() {
+            config.includeLowercase = lowercaseInput.checked
+            saveConfig()
+        })
+        digitsInput[a]('change', function() {
+            config.includeDigits = digitsInput.checked
+            saveConfig()
+        })
+        specialCharactersInput[a]('change', function() {
+            config.includeSpecialCharacters = specialCharactersInput.checked
+            saveConfig()
+        })
+        similiarCharactersInput[a]('change', function() {
+            config.excludeSimiliarCharacters = similiarCharactersInput.checked
+            saveConfig()
+        })
+        ambiguousCharactersInput[a]('change', function() {
+            config.excludeAmbiguousCharacters = ambiguousCharactersInput.checked
+            saveConfig()
         })
 
         passwordField[a]('click', copyPassword)
@@ -302,4 +414,4 @@
     }
 
     w[a]('DOMContentLoaded', init, false)
-})(window, document, 'querySelector', 'addEventListener')
+})(window, document, localStorage, 'querySelector', 'addEventListener')
