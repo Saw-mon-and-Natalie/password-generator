@@ -1,4 +1,5 @@
 const gulp = require('gulp')
+const gulpif = require('gulp-if')
 const replace = require('gulp-replace')
 const rename = require('gulp-rename')
 const crypto = require('crypto')
@@ -63,14 +64,21 @@ function babelify(cb) {
 }
 
 function compress() {
-    return gulp.src('src/js/*.js')
-        .pipe(babel({
+    return gulp.src('src/**/*.js')
+        .pipe(gulpif(/src\/js/, babel({
             presets: ['@babel/preset-env']
+        })))
+        .pipe(terser({
+            compress: {
+                drop_console: true,
+            },
+            mangle: {
+                toplevel: true,
+            }
         }))
-        .pipe(uglify())
         .pipe(through2.obj(computeHash))
         // .pipe(rename(addHashToFileName))
-        .pipe(gulp.dest(`${destPath}/js/`))
+        .pipe(gulp.dest(`${destPath}/`))
 }
 
 function css() {
@@ -167,8 +175,13 @@ function icons() {
 }
 
 function pwa() {
-    return gulp.src(['src/manifest.json', 'src/sw.js'])
+    return gulp.src(['src/manifest.json'])
         .pipe(gulp.dest(`${destPath}/`))
+}
+
+function openGraph() {
+    return gulp.src(['src/img/og.*'])
+        .pipe(gulp.dest(`${destPath}/img/`))
 }
 
 function copy(cb) {
@@ -239,5 +252,6 @@ exports.build = gulp.series(
     svg,
     icons,
     pwa,
+    openGraph,
     html
 )
