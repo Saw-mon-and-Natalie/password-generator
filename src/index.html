@@ -60,6 +60,10 @@
             </footer>
         </div>
         <form>
+            <div class="back">
+                <span></span>
+                <span></span>
+            </div>
             <label class="panel">
                 <div class="options">
                     <div class="panel-title badge-left">password length</div>
@@ -70,7 +74,7 @@
             </label>
             <input id="password-length-slider" type="range" min="6" max="1024" step="1" value="16">
             <fieldset class="panel" name="include">
-                <legend class="panel-title">include</legend>
+                <legend>include</legend>
                 <div class="options">
                     <label class="pad">
                         <input class="invisible" id="include-uppercase" type="checkbox" checked name="uppercase">
@@ -155,7 +159,7 @@
                 </div>
             </fieldset>
             <fieldset class="panel" name="exclude">
-                <legend class="panel-title">exclude</legend>
+                <legend>exclude</legend>
                 <div class="options">
                     <label class="pad">
                         <input class="invisible" id="exclude-similiar-characters" type="checkbox" name="similiar-characters" checked>
@@ -180,6 +184,8 @@
                 </div>
             </fieldset>
             <button id="generate-password" type="button" autofocus>Generate Password</button>
+
+
         </form>
         
         <div class="generated-password-wrapper">

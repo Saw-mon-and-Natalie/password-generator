@@ -1,4 +1,5 @@
 !(function(w, d, l, c, a) {
+    let body
     let generatedPasswordWrapper
     let passwordField
     let btn
@@ -7,6 +8,7 @@
     let closeBtn
 
     let passwordform
+    let backButton
     let passwordLengthSlider
     let passwordLengthInput
 
@@ -44,6 +46,7 @@
     }
 
     function initFields() {
+        body = d[c]('body')
         generatedPasswordWrapper = d[c]('.generated-password-wrapper')
         passwordField = d[c]("#password-field")
         btn = d[c]("#generate-password")
@@ -52,6 +55,7 @@
         closeBtn = d[c](".btn-close")
 
         main = passwordform = d[c]("form")
+        backButton = d[c](".back")
         passwordLengthSlider = d[c]("#password-length-slider")
         passwordLengthInput = d[c]("#password-length")
 
@@ -240,17 +244,18 @@
     }
 
     function toggleSettings() {
-        if( mainIsClosed ) {
-            leftSide.style.width = "40%";
-            main.style.display = "block";
-            main.style.opacity = 1;
-        } else {
-            main.style.opacity = 0;
-            main.style.display = "none";
-            leftSide.style.width = "100%";  
-        }
+        // if( mainIsClosed ) {
+        //     leftSide.style.width = "40%";
+        //     main.style.display = "block";
+        //     main.style.opacity = 1;
+        // } else {
+        //     main.style.opacity = 0;
+        //     main.style.display = "none";
+        //     leftSide.style.width = "100%";  
+        // }
         
-        mainIsClosed = !mainIsClosed
+        body.classList.toggle('settings-open')
+        // mainIsClosed = !mainIsClosed
     }
 
     function toggleShortcuts() {
@@ -409,6 +414,7 @@
         passwordField[a]('click', copyPassword)
         keySymbol[a]('click', generatePassword)
         settingsIcon[a]('click', toggleSettings)
+        backButton[a]('click', toggleSettings)
 
         d[a]('keyup', initShortcuts)
     }

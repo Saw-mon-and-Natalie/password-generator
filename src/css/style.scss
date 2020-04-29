@@ -27,11 +27,13 @@ body {
     flex-wrap: nowrap;
     min-height: 100vh;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
   
 #left {
     position: fixed;
     width: 100%;
+    left: 0;
     flex-shrink: 0;
     display: flex;
     z-index: 2;
@@ -41,7 +43,9 @@ body {
     background: radial-gradient(var(--b100), var(--b500) 200%);
     align-items: center;
     padding: 20px;
-    transition: width 0.5s ease-in-out;
+    transition: 
+        width 0.5s ease-in-out,
+        left 0.5s ease-in-out;
 
     header {
         width: 100%;
@@ -97,16 +101,15 @@ body {
 }
 
 form {
-    width: 60%;
-    padding: 50px 20px 100px 20px;
+    width: 320px;
+    padding: 50px 20px 200px 20px;
     display: flex;
-    justify-content: center;
     /* align-items: center; */
     min-height: 100vh;
     position: relative;
-    opacity: 0;
-    display: none;
-    transition: 0.5s ease-in-out;
+    // opacity: 0;
+    flex-direction: column;
+    justify-content: center;
     position: absolute;
     right: 0;
 
@@ -114,13 +117,15 @@ form {
     .panel {
         display: block;
         padding-bottom: 20px;
+        width: 100%;
 
         .options {
             display: flex;
             flex-direction: row;
+            flex-wrap: wrap;
 
             .badge-left {
-                display: inline-block;
+                flex-grow: 2;
                 background: var(--b500);
                 color: var(--b100);
                 padding: 2px 10px 5px 10px;
@@ -128,7 +133,6 @@ form {
             }
                 
             .badge-right {
-                display: inline-block;
                 padding: 2px 10px 5px 10px;
                 background: var(--b200);
                 border-radius: 0 6px 6px 0;
@@ -149,7 +153,7 @@ form {
 
             .pad {
                 position: relative;
-                width: 150px;
+                width: calc(50% - 10px);
                 height: 150px;
                 display: flex;
                 flex-direction: column;
@@ -196,8 +200,9 @@ form {
                         height: 20px;
                         border-radius: 50%;
                         background: var(--b500);
-                        transition: 0.3s ease-in-out;
-                        
+                        transition: transform 0.3s ease-in-out;
+                        transform: rotate(45deg);
+
                         span {
                             position: absolute;
                             top: 50%;
@@ -219,6 +224,14 @@ form {
                 input:checked ~ .background-fill {
                     background: var(--b500);
                     color: var(--b100);
+
+                    .cross {
+                        background: var(--b200);
+                        transform: rotate(0);
+                        span {
+                            background: var(--b500);
+                        }
+                    }
                 }
 
                 .character-class-range {
@@ -267,20 +280,25 @@ form {
             }
         }
 
-        .panel-title {
+        legend {
             color: var(--b500);
             font-weight: 600;
             padding: 5px 10px;
         }
     }
     button {
-        background: var(--b600);
-        color: var(--b100);
-        font-weight: 600;
-        border: none;
         padding: 10px 20px;
+        margin-top: 30px;
+        background: var(--b600);
+        width: 100%;
+        max-width: 320px;
+        flex-shrink: 0;
+        height: 5em;
+        color: var(--b100);
+        border: none;
         border-radius: 6px;
         cursor: pointer;
+        font-weight: 600;
     }
 }
 
@@ -296,7 +314,7 @@ form {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    padding: 60px 30px;
+    padding: 60px 20px;
     display: none;
     pointer-events: none;
     z-index: 3;
@@ -469,6 +487,80 @@ input[type="range"] {
     }
     &:focus::-webkit-slider-runnable-track {
         background: var(--b300);
+    }
+}
+
+.back {
+    position: fixed;
+    bottom: 20px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    display: none;
+    background: var(--b500);
+    border: solid 2px var(--w200);
+    box-shadow: 
+        2px 2px 12px 0 rgba(0,0,0,.1), 
+        -2px -2px 20px 0 rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+
+    span {
+        $height: 1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 2px * $height;
+        background: var(--b200);
+        border-radius: 2px * $height;
+        transform-origin: 1px * $height 1px * $height;
+        transform: translate(-4px, -1px * $height) rotate(-45deg);
+
+        &:nth-child(2) {
+            transform: translate(-4px, -1px * $height) rotate(45deg);
+        }
+    }
+}
+
+
+.settings-open {
+    overflow-y: scroll;
+
+    #left {
+        width: calc(100% - 320px);
+    }
+}
+
+@media (max-width: 763px) {
+    form {
+        width: 100%;
+        align-items: center;
+        legend {
+            text-align: center;
+        }
+
+        button {
+            max-width: 100%;
+        }
+    }
+
+    .generated-password-wrapper {
+        .generated-password {
+            width: 100%;
+        }
+    }
+
+    .settings-open {
+        #left {
+            width: 100%;
+            left: -100%;
+        }
+
+        .back {
+            display: block;
+        }
     }
 }
   

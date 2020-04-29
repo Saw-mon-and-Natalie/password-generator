@@ -5,7 +5,7 @@ A simple client-side password generator.
 ## TODO
 
 - [x] save settings to `localStorage`
-- [ ] make it mobile friendly
+- [x] make it mobile friendly
 - [ ] poster for `og:image`
 - [ ] implement the `js` file better.
 - [ ] PWA
