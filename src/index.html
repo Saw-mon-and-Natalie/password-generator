@@ -3,12 +3,14 @@
     <head>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no">
         <meta charset="utf-8">
-        <title>Cryptographically Strong Random Password Generator</title>
+        <meta name="robots" content="index,follow">
+        <meta name="referrer" content="origin-when-cross-origin">
+
+        <title>Password Generator App</title>
         <meta name="description" content="Cryptographically Strong Random Password Generator app that creates complex strong passowrd. The passwords are generated client side without sending any information to an external machine/server.">
         <meta name="keywords" content="Strong Password, Strong Password Generator, Cryptography, Password Generator, Online Password Generator, Random Password Generator, Secure Password Generator, Create Password, Generate Password, CLient-side Password Generator">
         
-        <meta name="robots" content="index,follow">
-        <meta name="referrer" content="origin-when-cross-origin">
+        <link rel="icon" type="image/x-icon" size="16x16 24x24 32x32 48x48 64x64 72x72 96x96 128x128 256x256" href="img/icons/f.ico"/>
         
         <meta name="author" content="Saw-mon &amp; Natalie">
         <meta name="creator" content="Saw-mon &amp; Natalie">
@@ -35,15 +37,16 @@
         <link rel="canonical" href="https://passwd.sawmon-and-natalie.com/">
 
         <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="manifest" href="/manifest.json">
     </head>
     <body>
-        <div class="left-side">
+        <div id="left">
             <header>
                 <h1>Password<br> Generator</h1>
             </header>
             <aside>
                 <img id="key-symbol" src="img/key.svg" width="100"/>
-                <p class="key-instructions">
+                <p>
                     Click, tap the key symbol or <br />
                     hit <b>[ENTER]</b> to generate a password.
                 </p>
@@ -52,110 +55,132 @@
                 <a href="https://github.com/Saw-mon-and-Natalie/password-generator" target="_blank" rel="noopener">
                     <img class="icon" src="img/github.svg" width="24" />
                 </a>
-                <p class="copyright">made with love by Saw-mon & Natalie</p>
+                <p>made with love by Saw-mon & Natalie</p>
                 <img id="settings-icon" class="icon" src="img/settings.svg" width="24" />
             </footer>
         </div>
-        <main>
-            <form id="password-form">
-                <label class="panel">
-                    <div class="options">
-                        <div class="panel-title badge-left">password length</div>
-                        <div class="badge-right">
-                            <input id="password-length" type="number" min="6" max="1024" value="16">
+        <form>
+            <label class="panel">
+                <div class="options">
+                    <div class="panel-title badge-left">password length</div>
+                    <div class="badge-right">
+                        <input id="password-length" type="number" min="6" max="1024" value="16">
+                    </div>
+                </div>
+            </label>
+            <input id="password-length-slider" type="range" min="6" max="1024" step="1" value="16">
+            <fieldset class="panel" name="include">
+                <legend class="panel-title">include</legend>
+                <div class="options">
+                    <label class="pad">
+                        <input class="invisible" id="include-uppercase" type="checkbox" checked name="uppercase">
+                        <div class="background-fill">
+                            <div class="sub-label">uppercase</div>
+                            <div class="cross">
+                                <span></span>
+                                <span></span>
+                            </div>
                         </div>
-                    </div>
-                </label>
-                <input id="password-length-slider" type="range" min="6" max="1024" step="1" value="16">
-                <fieldset class="panel" name="include">
-                    <legend class="panel-title">include</legend>
-                    <div class="options">
-                        <label class="pad">
-                            <input class="invisible" id="include-uppercase" type="checkbox" checked name="uppercase">
-                            <div class="background-fill">
-                                <div class="sub-label">uppercase</div>
+                        <div class="character-class-range">
+                            <label>
+                                <span>min</span>
+                                <input id="uppercaseMin" class="character-class-min" type="number" min="0" max="1024" value="2">
+                            </label>
+                            <label>
+                                <span>max</span>
+                                <input id="uppercaseMax" class="character-class-max" type="number" min="0" max="1024">
+                            </label>
+                        </div> 
+                    </label>
+                    <label class="pad">
+                        <input class="invisible" id="include-lowercase" type="checkbox" checked name="lowercase">
+                        <div class="background-fill">
+                            <div class="sub-label">lowercase</div>
+                            <div class="cross">
+                                <span></span>
+                                <span></span>
                             </div>
-                            <div class="character-class-range">
-                                <label>
-                                    <span>min</span>
-                                    <input id="uppercaseMin" class="character-class-min" type="number" min="0" max="1024" value="2">
-                                </label>
-                                <label>
-                                    <span>max</span>
-                                    <input id="uppercaseMax" class="character-class-max" type="number" min="0" max="1024">
-                                </label>
-                            </div> 
-                        </label>
-                        <label class="pad">
-                            <input class="invisible" id="include-lowercase" type="checkbox" checked name="lowercase">
-                            <div class="background-fill">
-                                <div class="sub-label">lowercase</div>
+                        </div>
+                        <div class="character-class-range">
+                            <label>
+                                <span>min</span>
+                                <input id="lowercaseMin" class="character-class-min" type="number" min="0" max="1024" value="2">
+                            </label>
+                            <label>
+                                <span>max</span>
+                                <input id="lowercaseMax" class="character-class-max" type="number" min="0" max="1024">
+                            </label>
+                        </div>
+                    </label>
+                    <label class="pad">
+                        <input class="invisible" id="include-digits" type="checkbox" checked name="digits">
+                        <div class="background-fill">
+                            <div class="sub-label">digits</div>
+                            <div class="cross">
+                                <span></span>
+                                <span></span>
                             </div>
-                            <div class="character-class-range">
-                                <label>
-                                    <span>min</span>
-                                    <input id="lowercaseMin" class="character-class-min" type="number" min="0" max="1024" value="2">
-                                </label>
-                                <label>
-                                    <span>max</span>
-                                    <input id="lowercaseMax" class="character-class-max" type="number" min="0" max="1024">
-                                </label>
+                        </div>
+                        <div class="character-class-range">
+                            <label>
+                                <span>min</span>
+                                <input id="digitsMin" class="character-class-min" type="number" min="0" max="1024" value="2">
+                            </label>
+                            <label>
+                                <span>max</span>
+                                <input id="digitsMax" class="character-class-max" type="number" min="0" max="1024">
+                            </label>
+                        </div>
+                    </label>
+                    <label class="pad">
+                        <input class="invisible" id="include-special-characters" type="checkbox" checked name="special-characters">
+                        <div class="background-fill">
+                            <div class="sub-label">special characters</div>
+                            <div class="cross">
+                                <span></span>
+                                <span></span>
                             </div>
-                        </label>
-                        <label class="pad">
-                            <input class="invisible" id="include-digits" type="checkbox" checked name="digits">
-                            <div class="background-fill">
-                                <div class="sub-label">digits</div>
+                        </div>
+                        <div class="character-class-range">
+                            <label>
+                                <span>min</span>
+                                <input id="specialCharactersMin" class="character-class-min" type="number" min="0" max="1024" value="2">
+                            </label>
+                            <label>
+                                <span>max</span>
+                                <input id="specialCharactersMax" class="character-class-max" type="number" min="0" max="1024">
+                            </label>
+                        </div>
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset class="panel" name="exclude">
+                <legend class="panel-title">exclude</legend>
+                <div class="options">
+                    <label class="pad">
+                        <input class="invisible" id="exclude-similiar-characters" type="checkbox" name="similiar-characters" checked>
+                        <div class="background-fill round-corners">
+                            <div class="sub-label">similiar characters</div>
+                            <div class="cross">
+                                <span></span>
+                                <span></span>
                             </div>
-                            <div class="character-class-range">
-                                <label>
-                                    <span>min</span>
-                                    <input id="digitsMin" class="character-class-min" type="number" min="0" max="1024" value="2">
-                                </label>
-                                <label>
-                                    <span>max</span>
-                                    <input id="digitsMax" class="character-class-max" type="number" min="0" max="1024">
-                                </label>
+                        </div>
+                    </label>
+                    <label class="pad">
+                        <input class="invisible" id="exclude-ambiguous-characters" type="checkbox" name="ambiguous-characters">
+                        <div class="background-fill round-corners">
+                            <div class="sub-label">ambiguous characters</div>
+                            <div class="cross">
+                                <span></span>
+                                <span></span>
                             </div>
-                        </label>
-                        <label class="pad">
-                            <input class="invisible" id="include-special-characters" type="checkbox" checked name="special-characters">
-                            <div class="background-fill">
-                                <div class="sub-label">special characters</div>
-                            </div>
-                            <div class="character-class-range">
-                                <label>
-                                    <span>min</span>
-                                    <input id="specialCharactersMin" class="character-class-min" type="number" min="0" max="1024" value="2">
-                                </label>
-                                <label>
-                                    <span>max</span>
-                                    <input id="specialCharactersMax" class="character-class-max" type="number" min="0" max="1024">
-                                </label>
-                            </div>
-                        </label>
-                    </div>
-                </fieldset>
-                <fieldset class="panel" name="exclude">
-                    <legend class="panel-title">exclude</legend>
-                    <div class="options">
-                        <label class="pad">
-                            <input class="invisible" id="exclude-similiar-characters" type="checkbox" name="similiar-characters" checked>
-                            <div class="background-fill round-corners">
-                                <div class="sub-label">similiar characters</div>
-                            </div>
-                        </label>
-                        <label class="pad">
-                            <input class="invisible" id="exclude-ambiguous-characters" type="checkbox" name="ambiguous-characters">
-                            <div class="background-fill round-corners">
-                                <div class="sub-label">ambiguous characters</div>
-                            </div> 
-                        </label>
-                    </div>
-                </fieldset>
-                <button id="generate-password" type="button" autofocus>Generate Password</button>
-            </form>
-        </main>
+                        </div> 
+                    </label>
+                </div>
+            </fieldset>
+            <button id="generate-password" type="button" autofocus>Generate Password</button>
+        </form>
         
         <div class="generated-password-wrapper">
             <div class="generated-password">
@@ -237,5 +262,6 @@
             </ul>
         </div>
         <script defer src="js/passwd.js"></script>
+        <script defer src="js/register-sw.js"></script>
     </body>
 </html>

@@ -51,7 +51,7 @@
         
         closeBtn = d[c](".btn-close")
 
-        passwordform = d[c]("#password-form")
+        main = passwordform = d[c]("form")
         passwordLengthSlider = d[c]("#password-length-slider")
         passwordLengthInput = d[c]("#password-length")
 
@@ -73,8 +73,8 @@
         ambiguousCharactersInput = d[c]("#exclude-ambiguous-characters")
 
         settingsIcon = d[c]("#settings-icon")
-        leftSide = d[c](".left-side")
-        main = d[c]("main")
+        leftSide = d[c]("#left")
+        // main = d[c]("main")
         mainIsClosed = true
         shortcutsPanel = d[c]("ul.shortcuts")
         shortcutsPanelIsOpen = false
@@ -101,13 +101,13 @@
     
         config.numShuffles = parseInt(config.numShuffles) || 10
 
-        uppercaseInput.checked = config.includeUppercase = config.includeUppercase || false
-        lowercaseInput.checked = config.includeLowercase = config.includeLowercase || false
-        digitsInput.checked = config.includeDigits = config.includeDigits || false
-        specialCharactersInput.checked = config.includeSpecialCharacters = config.includeSpecialCharacters || false
+        uppercaseInput.checked = config.includeUppercase = config.includeUppercase == undefined ? true : config.includeUppercase
+        lowercaseInput.checked = config.includeLowercase = config.includeLowercase == undefined ? true : config.includeLowercase
+        digitsInput.checked = config.includeDigits = config.includeDigits == undefined ? true : config.includeDigits
+        specialCharactersInput.checked = config.includeSpecialCharacters = config.includeSpecialCharacters == undefined ? true : config.includeSpecialCharacters
 
-        similiarCharactersInput.checked = config.excludeSimiliarCharacters = config.excludeSimiliarCharacters || false
-        ambiguousCharactersInput.checked = config.excludeAmbiguousCharacters = config.excludeAmbiguousCharacters || false
+        similiarCharactersInput.checked = config.excludeSimiliarCharacters = config.excludeSimiliarCharacters == undefined ? true : config.excludeSimiliarCharacters
+        ambiguousCharactersInput.checked = config.excludeAmbiguousCharacters = config.excludeAmbiguousCharacters == undefined ? true : config.excludeAmbiguousCharacters
 
         saveConfig()
     }
@@ -242,7 +242,7 @@
     function toggleSettings() {
         if( mainIsClosed ) {
             leftSide.style.width = "40%";
-            main.style.display = "flex";
+            main.style.display = "block";
             main.style.opacity = 1;
         } else {
             main.style.opacity = 0;

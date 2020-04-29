@@ -4,9 +4,10 @@ A simple client-side password generator.
 
 ## TODO
 
-- [ ] save settings to `localStorage`
+- [x] save settings to `localStorage`
 - [ ] make it mobile friendly
+- [ ] poster for `og:image`
 - [ ] implement the `js` file better.
 - [ ] PWA
-- [ ] `favicon.ico`
+- [x] `favicon.ico`
 - [ ] minify/uglify
