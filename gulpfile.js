@@ -39,6 +39,8 @@ function html() {
                 // ` integrity="sha512-${digest.get('style.css').sha512}"` +
                 // ` crossorigin="anonymous"`
         }))
+        .pipe(through2.obj(shortenCSSQueries))
+        // .pipe(through2.obj(inpsectFile))
         .pipe(htmlmin({
             collapseBooleanAttributes: true,
             collapseWhitespace: true,
@@ -65,16 +67,21 @@ function babelify(cb) {
 
 function compress() {
     return gulp.src('src/**/*.js')
+        .pipe(through2.obj(shortenCSSQueries))
         .pipe(gulpif(/src\/js/, babel({
             presets: ['@babel/preset-env']
         })))
         .pipe(terser({
             compress: {
                 drop_console: true,
+                passes: 3,
+                pure_funcs: ['shuffle', 'pickPosition'],
+                pure_getters : true,
             },
             mangle: {
                 toplevel: true,
-            }
+            },
+            toplevel: true,
         }))
         .pipe(through2.obj(computeHash))
         // .pipe(rename(addHashToFileName))
@@ -84,6 +91,7 @@ function compress() {
 function css() {
     return gulp.src('src/css/style.css')
         .pipe(purify(['src/js/*.js', 'src/*.html']))
+        .pipe(through2.obj(shortenCSSQueries))
         .pipe(autoprefixer())
         .pipe(cleanCSS({
             level: {
@@ -98,8 +106,10 @@ function css() {
 
 function scss_compile() {
     return gulp.src('src/css/style.scss')
+        .pipe(through2.obj(shortenCSSQueries))
+        .pipe(through2.obj(inpsectFile))
         .pipe(sass().on('error', sass.logError))
-        .pipe(purify(['src/js/*.js', 'src/*.html']))
+        // .pipe(purify(['src/js/*.js', 'src/*.html']))
         .pipe(postcss([
             sorting({
                 "order": ["custom-properties", "dollar-variables", "declarations", "rules", "at-rules"],
@@ -210,7 +220,7 @@ function terse(cb) {
     cb()
 }
 
-digest = new Map()
+const digest = new Map()
 
 function computeHash(file, _, cb) {
     if(file.isBuffer()) {
@@ -228,6 +238,91 @@ function addHashToFileName(path) {
     path.basename += '-' + digest.get(path.basename + path.extname).sha512
 }
 
+const cssQueries = new Map()
+const cssQueryRegex = /(class|id)(?:=)['"](?<css>[^'"]*)['"]/g
+const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+const regexes = {
+    html: `(%CSS_TYPE%=)(['"])(%CSS_QUERY%)(['"])`,
+    js: `(['"])(%CSS_TYPE%)(%CSS_QUERY%)(['"])`,
+    css: `(%CSS_TYPE%)(%CSS_QUERY%)`,
+    scss: `(%CSS_TYPE%)(%CSS_QUERY%)`
+}
+let cssQueriesCount = 0
+
+function findCSSQueries(cb) {
+    gulp.src('src/index.html')
+        .pipe(replace(cssQueryRegex, function(match, p1, p2, offset, string) {
+            if( cssQueries.has(p2) ) {
+                return string
+            }
+            p2.split(' ').forEach(el => {
+                if( el.length > 0 ) {
+                    cssQueries.set(el, { 
+                        name: setShortCSSQuery(cssQueriesCount),
+                        type: p1
+                    })
+                    cssQueriesCount += 1
+                }
+            })
+            
+            return string
+        }))
+    cb()
+}
+
+function setShortCSSQuery(i) {
+    if( i < chars.length ) {
+        return chars[i]
+    }
+
+    return chars[i % chars.length] + setShortCSSQuery(Math.floor(i / chars.length))
+}
+
+function shortenCSSQueries(file, enc, cb) {
+    if(file.isBuffer()) {
+        const ext = file.extname.substring(1)
+        if( ext in regexes) {
+            let content = file.contents.toString(enc)
+            if(ext === 'html') {
+                content = content.replace(cssQueryRegex, function(match, p1, p2, offset, string) {
+                    query = p2.split(' ')
+                    query = query.filter(el => el.length > 0)
+                    query = query.map(el => {
+                        if( el.length > 0 && cssQueries.has(el)) {
+                            let r = cssQueries.get(el)
+                            return p1 === r.type ? r.name : el
+                        }
+    
+                        return el
+                    })
+                    
+                    return `${p1}="${query.join(' ')}"`
+                })
+            } else {
+                cssQueries.forEach(function(value, key) {
+                    let cssType = value.type === 'class' ? '\\.' : '#'
+                    const newSubStr = ext.match('css') ? `$1${value.name}` : `$1$2${value.name}$4`
+
+                    let initializeRegexTemplate = regexes[ext].replace('%CSS_TYPE%', cssType)
+                    initializeRegexTemplate = initializeRegexTemplate.replace('%CSS_QUERY%', key)
+                    let r = new RegExp(initializeRegexTemplate, 'g')
+    
+                    content = content.replace(r, newSubStr)
+                })
+            }
+
+            file.contents = Buffer.from(content, enc)
+        }
+
+        cb(null, file)
+    }
+}
+
+function inpsectFile(file, enc, cb) {
+    console.log(enc)
+    cb(null, file)
+}
+
 function test(cb) {
     var s = gulp.src('src/js/passwd.js')
         .pipe(through2.obj(computeHash))
@@ -235,7 +330,7 @@ function test(cb) {
     cb()
 }
 
-exports.test = test
+exports.test = gulp.series(findCSSQueries, compress)
 
 exports.babelify = babelify
 exports.compress = compress
@@ -247,6 +342,7 @@ exports.html = html
 exports.terser = terse
 
 exports.build = gulp.series(
+    findCSSQueries,
     compress, 
     scss_compile, 
     svg,

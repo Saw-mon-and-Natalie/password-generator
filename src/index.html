@@ -60,7 +60,7 @@
             </footer>
         </div>
         <form>
-            <div class="back">
+            <div class="back-button">
                 <span></span>
                 <span></span>
             </div>
@@ -68,16 +68,16 @@
                 <div class="options">
                     <div class="panel-title badge-left">password length</div>
                     <div class="badge-right">
-                        <input id="password-length" type="number" min="6" max="1024" value="16">
+                        <input id="password-length-input" type="number" min="6" max="1024" value="16">
                     </div>
                 </div>
             </label>
             <input id="password-length-slider" type="range" min="6" max="1024" step="1" value="16">
-            <fieldset class="panel" name="include">
+            <fieldset class="panel">
                 <legend>include</legend>
                 <div class="options">
-                    <label class="pad">
-                        <input class="invisible" id="include-uppercase" type="checkbox" checked name="uppercase">
+                    <label class="pad-button">
+                        <input class="invisible" id="include-uppercase" type="checkbox" checked>
                         <div class="background-fill">
                             <div class="sub-label">uppercase</div>
                             <div class="cross">
@@ -96,8 +96,8 @@
                             </label>
                         </div> 
                     </label>
-                    <label class="pad">
-                        <input class="invisible" id="include-lowercase" type="checkbox" checked name="lowercase">
+                    <label class="pad-button">
+                        <input class="invisible" id="include-lowercase" type="checkbox" checked>
                         <div class="background-fill">
                             <div class="sub-label">lowercase</div>
                             <div class="cross">
@@ -116,8 +116,8 @@
                             </label>
                         </div>
                     </label>
-                    <label class="pad">
-                        <input class="invisible" id="include-digits" type="checkbox" checked name="digits">
+                    <label class="pad-button">
+                        <input class="invisible" id="include-digits" type="checkbox" checked>
                         <div class="background-fill">
                             <div class="sub-label">digits</div>
                             <div class="cross">
@@ -136,8 +136,8 @@
                             </label>
                         </div>
                     </label>
-                    <label class="pad">
-                        <input class="invisible" id="include-special-characters" type="checkbox" checked name="special-characters">
+                    <label class="pad-button">
+                        <input class="invisible" id="include-special-characters" type="checkbox" checked>
                         <div class="background-fill">
                             <div class="sub-label">special characters</div>
                             <div class="cross">
@@ -158,11 +158,11 @@
                     </label>
                 </div>
             </fieldset>
-            <fieldset class="panel" name="exclude">
+            <fieldset class="panel">
                 <legend>exclude</legend>
                 <div class="options">
-                    <label class="pad">
-                        <input class="invisible" id="exclude-similiar-characters" type="checkbox" name="similiar-characters" checked>
+                    <label class="pad-button">
+                        <input class="invisible" id="exclude-similiar-characters" type="checkbox" checked>
                         <div class="background-fill round-corners">
                             <div class="sub-label">similiar characters</div>
                             <div class="cross">
@@ -171,8 +171,8 @@
                             </div>
                         </div>
                     </label>
-                    <label class="pad">
-                        <input class="invisible" id="exclude-ambiguous-characters" type="checkbox" name="ambiguous-characters">
+                    <label class="pad-button">
+                        <input class="invisible" id="exclude-ambiguous-characters" type="checkbox">
                         <div class="background-fill round-corners">
                             <div class="sub-label">ambiguous characters</div>
                             <div class="cross">
@@ -184,12 +184,10 @@
                 </div>
             </fieldset>
             <button id="generate-password" type="button" autofocus>Generate Password</button>
-
-
         </form>
         
         <div class="generated-password-wrapper">
-            <div class="generated-password">
+            <div class="generated-password-self">
                 <div class="generated-password-inner">
                     <span id="password-field"></span>
                 </div>
@@ -200,68 +198,68 @@
                 <div class="copy">copied</div>
             </div>
             <ul class="shortcuts">
-                <li class="shortcut">
+                <li>
                     <span>copy</span>
-                    <div class="keyboard-btn-group">
+                    <div>
                         <div class="keyboard-btn">ctrl</div>
                         <span style="margin: 0 2px;">+</span>
                         <div class="keyboard-btn">C</div>
                     </div>
                     
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>generagte again</span>
                     <div class="keyboard-btn">Enter</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>increase pass length</span>
                     <div class="keyboard-btn">+</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>decrease pass length</span>
                     <div class="keyboard-btn">-</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>uppercase</span>
                     <div class="keyboard-btn">U</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>lowercase</span>
                     <div class="keyboard-btn">L</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>digits</span>
                     <div class="keyboard-btn">D</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>special characters</span>
                     <div class="keyboard-btn">S</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>similiar characters</span>
                     <div class="keyboard-btn">I</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>ambiguous characters</span>
                     <div class="keyboard-btn">A</div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>toggle shortcuts</span>
-                    <div class="keyboard-btn-group">
+                    <div>
                         <div class="keyboard-btn">/</div>
                         <span style="margin: 0 2px;">or</span>
                         <div class="keyboard-btn">?</div>
                     </div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>toggle settings</span>
-                    <div class="keyboard-btn-group">
+                    <div>
                         <div class="keyboard-btn">`</div>
                         <span style="margin: 0 2px;">or</span>
                         <div class="keyboard-btn">~</div>
                     </div>
                 </li>
-                <li class="shortcut">
+                <li>
                     <span>close</span>
                     <div class="keyboard-btn">Esc</div>
                 </li>

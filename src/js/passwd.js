@@ -31,8 +31,6 @@
 
     let settingsIcon
     let leftSide
-    let main
-    let mainIsClosed
     let shortcutsPanel
     let shortcutsPanelIsOpen
     let keySymbol
@@ -54,10 +52,10 @@
         
         closeBtn = d[c](".btn-close")
 
-        main = passwordform = d[c]("form")
-        backButton = d[c](".back")
+        passwordform = d[c]("form")
+        backButton = d[c](".back-button")
         passwordLengthSlider = d[c]("#password-length-slider")
-        passwordLengthInput = d[c]("#password-length")
+        passwordLengthInput = d[c]("#password-length-input")
 
         uppercaseInput = d[c]("#include-uppercase")
         lowercaseInput = d[c]("#include-lowercase")
@@ -78,9 +76,8 @@
 
         settingsIcon = d[c]("#settings-icon")
         leftSide = d[c]("#left")
-        // main = d[c]("main")
-        mainIsClosed = true
-        shortcutsPanel = d[c]("ul.shortcuts")
+
+        shortcutsPanel = d[c](".shortcuts")
         shortcutsPanelIsOpen = false
         keySymbol = d[c]("#key-symbol")
     }
@@ -244,18 +241,7 @@
     }
 
     function toggleSettings() {
-        // if( mainIsClosed ) {
-        //     leftSide.style.width = "40%";
-        //     main.style.display = "block";
-        //     main.style.opacity = 1;
-        // } else {
-        //     main.style.opacity = 0;
-        //     main.style.display = "none";
-        //     leftSide.style.width = "100%";  
-        // }
-        
         body.classList.toggle('settings-open')
-        // mainIsClosed = !mainIsClosed
     }
 
     function toggleShortcuts() {
