@@ -68,24 +68,70 @@ function babelify(cb) {
 function compress() {
     return gulp.src('src/**/*.js')
         .pipe(through2.obj(shortenCSSQueries))
+        .pipe(through2.obj(shortenLongJSWords))
         .pipe(gulpif(/src\/js/, babel({
             presets: ['@babel/preset-env']
         })))
         .pipe(terser({
             compress: {
                 drop_console: true,
-                passes: 3,
-                pure_funcs: ['shuffle', 'pickPosition'],
-                pure_getters : true,
+                passes: 10,
+                reduce_vars: false,
+                // pure_funcs: ['shuffle', 'pickPosition'],
+                // pure_getters : true,
+                // unused: "keep_assign"
             },
             mangle: {
                 toplevel: true,
+                // reserved: ['length'],
+                properties: {
+                    // builtins: true,
+                    // keep_quoted: 'strict',
+                    // regex: /^(?!.*length).*$/g,
+                    // reserved: ['length'],
+                    // undeclared: true
+                },
             },
             toplevel: true,
         }))
         .pipe(through2.obj(computeHash))
         // .pipe(rename(addHashToFileName))
         .pipe(gulp.dest(`${destPath}/`))
+}
+
+function shortenLongJSWords(file, enc, cb) {
+    if(file.isBuffer()) {
+        let contents = file.contents.toString(enc)
+        const words = [
+            'totalMin',
+            'totalMax',
+            'passwordLength',
+            'uppercaseMin',
+            'uppercaseMax',
+            'lowercaseMin',
+            'lowercaseMax',
+            'digitsMin',
+            'digitsMax',
+            'specialCharactersMin',
+            'specialCharactersMax',
+            'numShuffles',
+            'includeUppercase',
+            'includeLowercase',
+            'includeDigits',
+            'includeSpecialCharacters',
+            'excludeSimiliarCharacters',
+            'excludeAmbiguousCharacters'
+        ]
+    
+        changed = 0
+        for(let i in words) {
+            const r = new RegExp('config\\.' + words[i], 'g')
+            contents = contents.replace(r, 'config.' + setShortName(changed++) )
+        }
+        
+        file.contents = Buffer.from(contents, enc)
+        cb(null, file)
+    }
 }
 
 function css() {
@@ -258,7 +304,7 @@ function findCSSQueries(cb) {
             p2.split(' ').forEach(el => {
                 if( el.length > 0 ) {
                     cssQueries.set(el, { 
-                        name: setShortCSSQuery(cssQueriesCount),
+                        name: setShortName(cssQueriesCount),
                         type: p1
                     })
                     cssQueriesCount += 1
@@ -270,12 +316,12 @@ function findCSSQueries(cb) {
     cb()
 }
 
-function setShortCSSQuery(i) {
+function setShortName(i) {
     if( i < chars.length ) {
         return chars[i]
     }
 
-    return chars[i % chars.length] + setShortCSSQuery(Math.floor(i / chars.length))
+    return chars[i % chars.length] + setShortName(Math.floor(i / chars.length))
 }
 
 function shortenCSSQueries(file, enc, cb) {
