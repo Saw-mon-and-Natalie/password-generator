@@ -1,5 +1,8 @@
 # Password Generator
 
+[![Build Status](https://travis-ci.com/Saw-mon-and-Natalie/password-generator.svg?branch=master)](https://travis-ci.com/Saw-mon-and-Natalie/password-generator)
+
+
 A simple client-side password generator.
 
 ## TODO
@@ -13,4 +16,6 @@ A simple client-side password generator.
 - [x] minify/uglify
 
 
-- [icon-masks](https://w3c.github.io/manifest/#icon-masks)
+## Notes
+
+- [icon-masks safe zone](https://w3c.github.io/manifest/#icon-masks)
