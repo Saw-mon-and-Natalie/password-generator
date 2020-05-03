@@ -8,6 +8,9 @@ A simple client-side password generator.
 - [x] make it mobile friendly
 - [x] poster for `og:image`
 - [ ] implement the `js` file better.
-- [ ] PWA
+- [x] PWA
 - [x] `favicon.ico`
-- [ ] minify/uglify
+- [x] minify/uglify
+
+
+- [icon-masks](https://w3c.github.io/manifest/#icon-masks)

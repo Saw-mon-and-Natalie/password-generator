@@ -19,14 +19,14 @@ self.addEventListener('install', function(event) {
 })
 
 self.addEventListener('fetch', function(event) {
-    let networkFirst = true
+    let networkFirstCondition = true
     for(let path in urlsToCacheFirst) {
         if(event.request.url.indexOf(path) !== -1) {
-            networkFirst = false
+            networkFirstCondition = false
             break
         }
     }
-    if(networkFirst) {
+    if(networkFirstCondition) {
         event.respondWith(networkFirst(event))
     } else {
         event.respondWith(cacheFirst(event))

@@ -1,3 +1,6 @@
+$padding: 20px;
+$border-radius-unit: 6px;
+
 :root {
     --b600: rgb(15, 34, 63);
     --b500: rgb(27, 62, 119);
@@ -7,6 +10,7 @@
     --b100: rgb(215, 229, 251);
     --b100-93: rgba(215, 229, 251, 0.93);
     --w200: rgb(247, 247, 247);
+    --w400-0: rgba(53, 124, 237, 0);
 }
   
 * {
@@ -20,7 +24,7 @@
 body {
     background: var(--w200);
     font-family: "Source Sans Pro", Arial, Helvetica, sans-serif;
-    /* padding: 20px; */
+    /* padding: $padding; */
     margin: 0;
     /* display: flex; */
     flex-direction: row;
@@ -45,7 +49,7 @@ body {
     justify-content: space-between;
     background: radial-gradient(var(--b100), var(--b500) 200%);
     align-items: center;
-    padding: 20px;
+    padding: $padding;
     transition: 
         width 0.5s ease-in-out,
         left 0.5s ease-in-out;
@@ -109,7 +113,7 @@ footer {
 
 form {
     width: 320px;
-    padding: 50px 20px 200px 20px;
+    padding: 50px $padding 200px $padding;
     display: flex;
     /* align-items: center; */
     min-height: 100vh;
@@ -121,7 +125,7 @@ form {
     right: 0;
 
     button {
-        padding: 10px 20px;
+        padding: 10px $padding;
         margin-top: 30px;
         background: var(--b600);
         width: 100%;
@@ -130,7 +134,7 @@ form {
         height: 5em;
         color: var(--b100);
         border: none;
-        border-radius: 6px;
+        border-radius: $border-radius-unit;
         cursor: pointer;
         font-weight: 600;
     }
@@ -140,12 +144,8 @@ fieldset { border: none; }
 
 .panel {
     display: block;
-    padding-bottom: 20px;
+    padding-bottom: $padding;
     width: 100%;
-
-
-
-
 }
 
 .options {
@@ -159,13 +159,13 @@ fieldset { border: none; }
     background: var(--b500);
     color: var(--b100);
     padding: 2px 10px 5px 10px;
-    border-radius: 6px 0 0 6px;
+    border-radius: $border-radius-unit 0 0 $border-radius-unit;
 }
     
 .badge-right {
     padding: 2px 10px 5px 10px;
     background: var(--b200);
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 $border-radius-unit $border-radius-unit 0;
 
     input {
         border: none;
@@ -188,7 +188,7 @@ fieldset { border: none; }
     display: flex;
     flex-direction: column;
     /* background: var(--b200); */
-    border-radius: 6px;
+    border-radius: $border-radius-unit;
     /* padding: 10px; */
     margin: 5px;
     cursor: pointer;
@@ -207,13 +207,13 @@ fieldset { border: none; }
     left: 0;
     width: 100%;
     flex-grow: 2;
-    border-radius: 6px 6px 0 0;
+    border-radius: $border-radius-unit $border-radius-unit 0 0;
     background: var(--b200);
     padding: 10px;
     color: var(--b500);
 
     &.round-corners {
-        border-radius: 6px 6px 6px 6px;
+        border-radius: $border-radius-unit $border-radius-unit $border-radius-unit $border-radius-unit;
     }
 }
 
@@ -274,7 +274,7 @@ input:checked ~ .background-fill {
     background: var(--b100);
     display: flex;
     padding: 5px;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0 0 $border-radius-unit $border-radius-unit;
     overflow: hidden;
 
     label {
@@ -330,7 +330,7 @@ legend {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    padding: 60px 20px;
+    padding: 60px $padding;
     display: none;
     pointer-events: none;
     z-index: 3;
@@ -341,8 +341,8 @@ legend {
     width: 50%;
     min-width: 250px;
     background: var(--b400);
-    border-radius: 6px;
-    padding: 20px;
+    border-radius: $border-radius-unit;
+    padding: $padding;
     color: var(--w200);
     font-size: 3em;
     box-shadow: 2px 2px 30px 4px rgba(27, 62, 119, 0.36);
@@ -356,8 +356,8 @@ legend {
         height: 100%;
         top: 0;
         right: 0;
-        background: linear-gradient(to right, transparent, var(--b400) 75%);
-        border-radius: 0 6px 6px 0;
+        background: linear-gradient(to right, var(--w400-0), var(--b400) 75%);
+        border-radius: 0 $border-radius-unit $border-radius-unit 0;
         pointer-events: none;
     }
 }
@@ -386,7 +386,7 @@ legend {
     height: 20px;
     background: var(--b500);
     z-index: 2;
-    border-radius: 10px;
+    border-radius: 50%;
 
     span {
         width: 10px;
@@ -413,7 +413,7 @@ legend {
     background: var(--b500);
     color: var(--b100);
     padding: 2px 5px 5px 5px;
-    border-radius: 6px;
+    border-radius: $border-radius-unit;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
 
@@ -431,9 +431,9 @@ legend {
     list-style: none;
     margin-top: 100px;
     width: 250px;
-    padding: 30px 20px 20px 20px;
+    padding: 30px $padding $padding $padding;
     background: var(--w200);
-    border-radius: 6px;
+    border-radius: $border-radius-unit;
     box-shadow: 2px 2px 20px rgba(0,0,0,0.1);
     display: none;
 
@@ -445,7 +445,7 @@ legend {
         background: var(--b400);
         color: var(--w200);
         padding: 2px 10px 3px 10px;
-        border-radius: 6px;
+        border-radius: $border-radius-unit;
     }
 
     li {
@@ -461,7 +461,7 @@ legend {
             color: var(--b100);
             padding: 5px 10px 8px 10px;
             display: inline-block;
-            border-radius: 6px;
+            border-radius: $border-radius-unit;
             min-width: 2.5em;
             text-align: center;
         }

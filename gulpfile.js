@@ -83,12 +83,12 @@ function compress() {
             },
             mangle: {
                 toplevel: true,
-                // reserved: ['length'],
+                reserved: ['addAll'],
                 properties: {
                     // builtins: true,
                     // keep_quoted: 'strict',
                     // regex: /^(?!.*length).*$/g,
-                    // reserved: ['length'],
+                    reserved: ['waitUntil', 'respondWith', 'request', 'type', 'addAll'],
                     // undeclared: true
                 },
             },
@@ -96,6 +96,27 @@ function compress() {
         }))
         .pipe(through2.obj(computeHash))
         // .pipe(rename(addHashToFileName))
+        .pipe(gulp.dest(`${destPath}/`))
+}
+
+function compress2() {
+    return gulp.src('src/sw.js')
+        .pipe(terser({
+            compress: {
+                drop_console: true,
+                passes: 10,
+                reduce_vars: false,
+                // keep_fnames: 'addAll'
+            },
+            mangle: {
+                toplevel: true,
+                reserved: ['addAll'],
+                properties: {
+                    reserved: ['waitUntil', 'respondWith', 'request', 'type', 'addAll'],
+                },
+            },
+            // toplevel: true,
+        }))
         .pipe(gulp.dest(`${destPath}/`))
 }
 
@@ -231,7 +252,7 @@ function icons() {
 }
 
 function pwa() {
-    return gulp.src(['src/manifest.json'])
+    return gulp.src(['src/manifest.json', 'src/browserconfig.xml'])
         .pipe(gulp.dest(`${destPath}/`))
 }
 
@@ -376,7 +397,7 @@ function test(cb) {
     cb()
 }
 
-exports.test = gulp.series(findCSSQueries, compress)
+exports.test = gulp.series(compress2)
 
 exports.babelify = babelify
 exports.compress = compress
