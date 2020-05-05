@@ -1,0 +1,19 @@
+name: 'gh-deploy'
+on: [push]
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        name: 'Deploying to GitHub Pages'
+        steps:
+        -   name: Checkout
+            uses: actions/checkout@master
+
+        -   name: Build and deploy
+            uses: Saw-mon-and-Natalie/gh-pages-deployment-action@v1.2.2
+            env:
+                ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                BASE_BRANCH: master
+                BRANCH: gh-pages
+                FOLDER: dist
+                BUILD_SCRIPT: "npm install && npm run build"
