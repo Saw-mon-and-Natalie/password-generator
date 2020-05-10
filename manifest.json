@@ -5,6 +5,7 @@
     "start_url": "/",
     "display": "standalone",
     "background_color": "#1b3e77",
+    "theme_color": "#d7e5fb",
     "description": "Cryptographically Strong Random Password Generator app that creates complex strong passowrd. The passwords are generated client side without sending any information to an external machine/server.",
     "icons": [
         {
