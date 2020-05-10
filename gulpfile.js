@@ -252,12 +252,12 @@ function icons() {
 }
 
 function pwa() {
-    return gulp.src(['src/manifest.json', 'src/browserconfig.xml'])
+    return gulp.src(['src/manifest.json', 'src/browserconfig.xml', 'src/robots.txt'])
         .pipe(gulp.dest(`${destPath}/`))
 }
 
 function openGraph() {
-    return gulp.src(['src/img/og.*'])
+    return gulp.src(['src/img/og.*', 'src/img/screenshot.*'])
         .pipe(gulp.dest(`${destPath}/img/`))
 }
 

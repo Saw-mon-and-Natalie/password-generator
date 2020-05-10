@@ -7,7 +7,7 @@
         <meta name="referrer" content="origin-when-cross-origin">
 
         <title>Password Generator App</title>
-        <meta name="description" content="Cryptographically Strong Random Password Generator app that creates complex strong passowrd. The passwords are generated client side without sending any information to an external machine/server.">
+        <meta name="description" content="Cryptographically Strong Random Password Generator app that creates complex strong passowrds. The passwords are generated client side without sending any information to an external machine/server.">
         <meta name="keywords" content="Strong Password, Strong Password Generator, Cryptography, Password Generator, Online Password Generator, Random Password Generator, Secure Password Generator, Create Password, Generate Password, CLient-side Password Generator">
         
         <!-- <link rel="icon" type="image/x-icon" size="16x16 24x24 32x32 48x48 64x64 72x72 96x96 128x128 256x256" href="/img/icons/f.ico"/> -->
@@ -55,7 +55,6 @@
         
         <meta name="author" content="Saw-mon &amp; Natalie">
         <meta name="creator" content="Saw-mon &amp; Natalie">
-        <meta name="theme-color" content="#FFFFFF">
         <meta name="twitter:site" content="@sw0nt">
         <meta name="twitter:creator" content="@sw0nt">
         <meta name="apple-mobile-web-app-title" content="saw-mon &amp; natalie">
@@ -75,6 +74,31 @@
         <meta property="og:image:height" content="1200px">
         <meta property="og:image:alt" content="Password Generator and a key made of jigsaw puzzle pieces on a background made of complex string of cryptographic letters.">
 
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org/",
+                "@type": "WebApplication",
+                "name": "Password Generator",
+                "applicationCategory": "UtilitiesApplication",
+              	"operatingSystem": "Android, MacOS, OSX, iOS, Windows, Linux",
+                "applicationSubCategory": "Passwords",
+                "author": "Saw-mon & Natalie",
+                "screenshot": "https://passwd.sawmon-and-natalie.com/img/screenshot.png"
+                "copyrightHolder": "Saw-mon & Natalie",
+                "copyrightYear": 2020,
+                "abstract": "Cryptographically Strong Random Password Generator app that creates complex strong passowrds. The passwords are generated client side without sending any information to an external machine/server.",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CAD"
+                },
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "5",
+                    "ratingCount": "3"
+                }
+            }
+        </script>
         <link rel="canonical" href="https://passwd.sawmon-and-natalie.com/">
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&text=%20%26%2B%2C-.ACDEGILNPRSTU%5B%5Dabcdeghiklmnoprstuvwxy&display=swap" rel="stylesheet" crossorigin>
@@ -86,7 +110,7 @@
                 <h1>Password<br> Generator</h1>
             </header>
             <aside>
-                <img id="key-symbol" src="img/key.svg" width="100"/>
+                <img id="key-symbol" src="img/key.svg" alt="A key made of 4 zigsaw puzzle pieces of varying blue shades." width="100"/>
                 <p>
                     Click, tap the key symbol or <br />
                     hit <b>[ENTER]</b> to generate a password.
@@ -94,10 +118,10 @@
             </aside>
             <footer>
                 <a href="https://github.com/Saw-mon-and-Natalie/password-generator" target="_blank" rel="noopener">
-                    <img class="icon" src="img/github.svg" width="24" />
+                    <img class="icon" src="img/github.svg" alt="GitHub OctaCat Logo icon." width="24" />
                 </a>
                 <p>made with love by Saw-mon & Natalie</p>
-                <img id="settings-icon" class="icon" src="img/settings.svg" width="24" />
+                <img id="settings-icon" class="icon" src="img/settings.svg" alt="Sprocket gear icon for settings panel." width="24" />
             </footer>
         </div>
         <form>
@@ -113,7 +137,9 @@
                     </div>
                 </div>
             </label>
-            <input id="password-length-slider" type="range" min="6" max="1024" step="1" value="16">
+            <label style="width: 100%">
+                <input id="password-length-slider" type="range" min="6" max="1024" step="1" value="16">
+            </label>
             <fieldset class="panel">
                 <legend>include</legend>
                 <div class="options">
