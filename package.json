@@ -44,7 +44,7 @@
     "gulp-svgmin": "^2.2.0",
     "gulp-terser": "^1.2.0",
     "gulp-uglify": "^3.0.2",
-    "node-sass": "^4.14.0",
+    "node-sass": "^7.0.0",
     "postcss-sorting": "^5.0.1",
     "through2": "^3.0.1"
   },
